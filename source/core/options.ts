@@ -823,6 +823,7 @@ const defaultInternals: Options['_internals'] = {
 	maxHeaderSize: undefined,
 	signal: undefined,
 	enableUnixSockets: false,
+	resolveProtocol: undefined,
 };
 
 const cloneInternals = (internals: typeof defaultInternals) => {
@@ -2394,6 +2395,16 @@ export default class Options {
 		this._internals.enableUnixSockets = value;
 	}
 
+	get resolveProtocol(): http2wrapper.ResolveProtocolFunction | undefined {
+		return this._internals.resolveProtocol
+	}
+
+	set resolveProtocol(value: http2wrapper.ResolveProtocolFunction | undefined) {
+		assert.function(value);
+
+		this._internals.resolveProtocol = value
+	}
+
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	toJSON() {
 		return {...this._internals};
@@ -2462,6 +2473,7 @@ export default class Options {
 
 			// HTTP/2 options
 			h2session: internals.h2session,
+			resolveProtocol: internals.resolveProtocol,
 		};
 	}
 
